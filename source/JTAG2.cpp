@@ -186,7 +186,7 @@ void NVM_buffered_write(uint16_t address, uint16_t lenght, uint8_t buff_size, ui
 			default:
 				size_word[0] = 2;
 				body[0] = RSP_ILLEGAL_MCU_STATE;
-				body[1] = 0x01;
+				body[1] = system_status; // 0x01;
 				return;
 		}
 	}
@@ -211,7 +211,7 @@ void NVM_buffered_write(uint16_t address, uint16_t lenght, uint8_t buff_size, ui
 			default:
 				size_word[0] = 2;
 				body[0] = RSP_ILLEGAL_MCU_STATE;
-				body[1] = 0x01;
+				body[1] = system_status; // 0x01;
 				return;
 		}
 	}
