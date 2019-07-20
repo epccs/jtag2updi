@@ -14,14 +14,9 @@ namespace UPDI_io {
 	enum ctrl {single_break, double_break, enable};
 
 	// Function prototypes
-	void setup_bit_low();
-	void setup_bit_high();
-	void wait_for_bit() __attribute__((always_inline));
-	void stop_timer();
-	void start_timer();
-	int put(char) __attribute__((optimize("no-tree-loop-optimize")));
-	int put(ctrl);	
-	int get();
+	uint8_t put(char) __attribute__((optimize("no-tree-loop-optimize")));
+	uint8_t put(ctrl);	
+	uint8_t get() __attribute__((optimize("no-tree-loop-optimize")));
 	void init(void);
 }
 
