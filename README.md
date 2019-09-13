@@ -1,6 +1,6 @@
 # jtag2updi
 
-This is a firmware, that when uploaded on an atmega328p, or a similar AVR MCU, enables it to interface with avrdude using the jtagice Mk2 protocol via a serial link. In particular, you can use an Arduino to host this firmware.
+This is a firmware, that when uploaded on an atmega328p, or a similar AVR MCU (including experimental support for atmega1280/2560), enables it to interface with avrdude using the jtagice Mk2 protocol via a serial link. In particular, you can use an Arduino Uno/Nano to host this firmware (experimental support for Arduino Mega).
 It provides a bridge to program the new attiny817 family of MCUs, that use the UPDI interface:
 
 avrdude -> HW Serial interface -> Programmer MCU (e.g. Mega328P) -> SW Serial on PD6 -> Target MCU (e.g. tiny817)
@@ -71,6 +71,9 @@ The definitions for UPDI chips were slightly modified so that avrdude thinks the
 This allows the jtagice mk2 protocol to be used for programming UPDI chips, since this protocol predates UPDI and is not formally compatible with it. Originally, I had planed to use the STK500v2 protocol, and emulate the ISP interface, and I actually wrote an ISP version of the programmer software.
 
 However, this would require entirely new definitions for the UPDI chips inside the avrdude.conf file, while using jtagice2 requires only very slight changes to the definions provided by Atmel (now Microchip).
+
+<b>Note:</b>
+If you install the Arduino board "Nano Every" in your Arduino IDE, it will come with versions of avrdude and avrdude.conf files that support jtag2updi. You can use those files instead of the compatibility avrdude.conf supplied here which is meant for older avrdude versions.
 
 Jtagice mk2 is the most advanced of Atmel's programming protocols that still supports a UART serial connection instead of USB, making it easily compatible with any Arduino you choose to host this software, and any OS you run avrdude on.
 
@@ -145,11 +148,13 @@ See [Tools](tools/avrjtagicev2) section of the project on how to prepare and use
 
 ## Troubleshooting
 
-If you have triple-checked all the connections but still getting errors, the problem might be the speed of the serial links. I have set the jtag2updi entry on the avrdude configuration file to run at 115200 baud by default. This baud rate can cause errors, for example, if your MCU is running at 8MHz.
+If you have triple-checked all the connections but still getting errors, the problem might be the speed of the serial links. I have set the jtag2updi entry on the avrdude configuration file to run at 115200 baud by default. This baud rate can cause errors if, for example, your MCU is running at 8MHz.
 
 This can be changed with the avrdude "-b" option. Valid baud rates are 2400, 4800, 9600, 14400, 19200, 38400, 57600 and 115200. You can make the setting permanent by editing the jtag2updi entry on "avrdude.conf".
 
 If the trouble is on the UPDI link, a slower speed can be selected by changing UPDI_BAUD and recompiling.
+You can also try to use the alternate bit banging USART by setting UPDI_IO_TYPE to 2.
+You will find these and other configuration settings in the "sys.h" header file.
 
 ## Contact the author
 
